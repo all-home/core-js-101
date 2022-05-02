@@ -1,108 +1,91 @@
 /* *******************************************************************************************
  *                                                                                           *
- * Please read the following tutorial before implementing tasks:                              *
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Numbers_and_dates#Date_object
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date     *
+ * Plese read the following tutorial before implementing tasks:                              *
+ * https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions            *
+ *                                                                                           *
+ * You can use the next web site in order to check and build regexps:                        *
+ * https://regexr.com                                                                        *
  *                                                                                           *
  ******************************************************************************************* */
 
 
 /**
- * Parses a rfc2822 string date representation into date value
- * For rfc2822 date specification refer to : http://tools.ietf.org/html/rfc2822#page-14
+ * Returns the regexp that matches a GUID string representation
+ * '{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}',
+ * where X is hexadecimal digit (0,1,2...,9,A,a,B,b,C,c,D,d,F,f)
  *
- * @param {string} value
- * @return {date}
+ * See more details: https://en.wikipedia.org/wiki/Globally_unique_identifier
  *
- * @example:
- *    'December 17, 1995 03:24:00'    => Date()
- *    'Tue, 26 Jan 2016 13:48:02 GMT' => Date()
- *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
+ * Match :
+ *   '{3F2504E0-4F89-41D3-9A0C-0305E82C3301}'
+ *   '{21EC2020-3AEA-4069-A2DD-08002B30309D}'
+ *   '{0c74f13f-fa83-4c48-9b33-68921dd72463}'
+ *
+ *  Do not match:
+ *   '{D44EF4F4-280B47E5-91C7-261222A59621}'
+ *   '{D1A5279D-B27D-4CD4-A05E-EFDH53D08E8D}'
+ *   '{5EDEB36C-9006-467A8D04-AFB6F62CD7D2}'
+ *   '677E2553DD4D43B09DA77414DB1EB8EA'
+ *   '0c74f13f-fa83-4c48-9b33-68921dd72463'
+ *   'The roof, the roof, the roof is on fire'
+ *
+ * @return {RegExp}
  */
-function parseDataFromRfc2822(/* value */) {
-  throw new Error('Not implemented');
-}
-
-/**
- * Parses an ISO 8601 string date representation into date value
- * For ISO 8601 date specification refer to : https://en.wikipedia.org/wiki/ISO_8601
- *
- * @param {string} value
- * @return {date}
- *
- * @example :
- *    '2016-01-19T16:07:37+00:00'    => Date()
- *    '2016-01-19T08:07:37Z' => Date()
- */
-function parseDataFromIso8601(/* value */) {
-  throw new Error('Not implemented');
+function getRegexForGuid() {
+    const reg = /^{[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}}$/;
+    return reg;
 }
 
 
 /**
- * Returns true if specified date is leap year and false otherwise
- * Please find algorithm here: https://en.wikipedia.org/wiki/Leap_year#Algorithm
+ * Returns the regexp that matches all the strings from first column
+ * but of them from the second
  *
- * @param {date} date
- * @return {bool}
+ * Match :                 Do not match:
+ * -----------             --------------
+ *  'pit'                     ' pt'
+ *  'spot'                    'Pot'
+ *  'spate'                   'peat'
+ *  'slap two'                'part'
+ *  'respite'
  *
- * @example :
- *    Date(1900,1,1)    => false
- *    Date(2000,1,1)    => true
- *    Date(2001,1,1)    => false
- *    Date(2012,1,1)    => true
- *    Date(2015,1,1)    => false
+ * NOTE : the regex length should be < 13
+ *
+ * @return {RegExp}
+ *
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function getRegexForPitSpot() {
+    return /p.t/;
 }
 
 
 /**
- * Returns the string representation of the timespan between two dates.
- * The format of output string is "HH:mm:ss.sss"
+ * Returns the password validator regex.
+ * Regex will validate a password to make sure it meets the follwing criteria:
+ *  - At least specified characters long (argument minLength)
+ *  - Contains a lowercase letter
+ *  - Contains an uppercase letter
+ *  - Contains a number
+ *  - Valid passwords will only be alphanumeric characters.
  *
- * @param {date} startDate
- * @param {date} endDate
- * @return {string}
+ * @param {number} minLength
+ * @return {Regex}
  *
- * @example:
- *    Date(2000,1,1,10,0,0),  Date(2000,1,1,11,0,0)   => "01:00:00.000"
- *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,30,0)       => "00:30:00.000"
- *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,20)        => "00:00:20.000"
- *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
- *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
+ * @example
+ *   let validator = getPasswordValidator(6);
+ *   'password'.match(validator)  => false
+ *   'Pa55Word'.match(validator)  => true
+ *   'PASSw0rd'.match(validator)  => true
+ *   'PASSW0RD'.match(validator)  => false
+ *   'Pa55'.match(validator) => false
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
-}
-
-
-/**
- * Returns the angle (in radians) between the hands of an analog clock
- * for the specified Greenwich time.
- * If you have problem with solution please read: https://en.wikipedia.org/wiki/Clock_angle_problem
- *
- * SMALL TIP: convert to radians just once, before return in order to not lost precision
- *
- * @param {date} date
- * @return {number}
- *
- * @example:
- *    Date.UTC(2016,2,5, 0, 0) => 0
- *    Date.UTC(2016,3,5, 3, 0) => Math.PI/2
- *    Date.UTC(2016,3,5,18, 0) => Math.PI
- *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
- */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function getPasswordValidator(minLength) {
+    return new RegExp(`^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{${minLength},}$`);
 }
 
 
 module.exports = {
-  parseDataFromRfc2822,
-  parseDataFromIso8601,
-  isLeapYear,
-  timeSpanToString,
-  angleBetweenClockHands,
+    getRegexForGuid,
+    getRegexForPitSpot,
+    getPasswordValidator,
 };

@@ -1,6 +1,8 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-expressions */
 /* ************************************************************************************************
  *                                                                                                *
- * Please read the following tutorial before implementing tasks:                                   *
+ * Plese read the following tutorial before implementing tasks:                                   *
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise       *
  *                                                                                                *
  ************************************************************************************************ */
@@ -28,8 +30,12 @@
  *      .catch((error) => console.log(error.message)) // 'Error: Wrong parameter is passed!
  *                                                    //  Ask her again.';
  */
-function willYouMarryMe(/* isPositiveAnswer */) {
-  throw new Error('Not implemented');
+function willYouMarryMe(isPositiveAnswer) {
+    return new Promise((resolve, reject) => {
+        isPositiveAnswer === true ? resolve('Hooray!!! She said "Yes"!') : null;
+        isPositiveAnswer === false ? resolve('Oh no, she said "No".') : null;
+        reject(new Error('Wrong parameter is passed! Ask her again.'));
+    });
 }
 
 
@@ -48,8 +54,8 @@ function willYouMarryMe(/* isPositiveAnswer */) {
  *    })
  *
  */
-function processAllPromises(/* array */) {
-  throw new Error('Not implemented');
+function processAllPromises(array) {
+    return Promise.all(array);
 }
 
 /**
@@ -71,8 +77,8 @@ function processAllPromises(/* array */) {
  *    })
  *
  */
-function getFastestPromise(/* array */) {
-  throw new Error('Not implemented');
+function getFastestPromise(array) {
+    return Promise.race(array);
 }
 
 /**
@@ -92,13 +98,17 @@ function getFastestPromise(/* array */) {
  *    });
  *
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
+function chainPromises(array, action) {
+    const arr = [];
+    const result = Promise.resolve(array);
+    return result.then((data) => data.forEach((res) => {
+        res.then((data) => arr.push(data));
+    })).then(() => arr.reduce((accum, curr) => action(accum, curr)));
 }
 
 module.exports = {
-  willYouMarryMe,
-  processAllPromises,
-  getFastestPromise,
-  chainPromises,
+    willYouMarryMe,
+    processAllPromises,
+    getFastestPromise,
+    chainPromises,
 };
