@@ -31,11 +31,11 @@
  *                                                    //  Ask her again.';
  */
 function willYouMarryMe(isPositiveAnswer) {
-    return new Promise((resolve, reject) => {
-        isPositiveAnswer === true ? resolve('Hooray!!! She said "Yes"!') : null;
-        isPositiveAnswer === false ? resolve('Oh no, she said "No".') : null;
-        reject(new Error('Wrong parameter is passed! Ask her again.'));
-    });
+  return new Promise((resolve, reject) => {
+    isPositiveAnswer === true ? resolve('Hooray!!! She said "Yes"!') : null;
+    isPositiveAnswer === false ? resolve('Oh no, she said "No".') : null;
+    reject(new Error('Wrong parameter is passed! Ask her again.'));
+  });
 }
 
 
@@ -55,7 +55,7 @@ function willYouMarryMe(isPositiveAnswer) {
  *
  */
 function processAllPromises(array) {
-    return Promise.all(array);
+  return Promise.all(array);
 }
 
 /**
@@ -78,7 +78,7 @@ function processAllPromises(array) {
  *
  */
 function getFastestPromise(array) {
-    return Promise.race(array);
+  return Promise.race(array);
 }
 
 /**
@@ -99,16 +99,16 @@ function getFastestPromise(array) {
  *
  */
 function chainPromises(array, action) {
-    const arr = [];
-    const result = Promise.resolve(array);
-    return result.then((data) => data.forEach((res) => {
-        res.then((data) => arr.push(data));
-    })).then(() => arr.reduce((accum, curr) => action(accum, curr)));
+  const arr = [];
+  const result = Promise.resolve(array);
+  return result.then((data) => data.forEach((res) => {
+    res.then((data) => arr.push(data));
+  })).then(() => arr.reduce((accum, curr) => action(accum, curr)));
 }
 
 module.exports = {
-    willYouMarryMe,
-    processAllPromises,
-    getFastestPromise,
-    chainPromises,
+  willYouMarryMe,
+  processAllPromises,
+  getFastestPromise,
+  chainPromises,
 };
